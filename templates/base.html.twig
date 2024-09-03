@@ -1,0 +1,92 @@
+{% set canonical_url = canonical_url is defined ? canonical_url : app.request.uri %}
+{% set current_path = app.request.pathinfo %}
+{% set index_path = path('index') %}
+{% set comic_archive_path = path('comic_archive') %}
+{% set about_path = path('about') %}
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>{% block title %}{{ site.title }}{% endblock %}</title>
+    <link rel="canonical" href="{{ canonical_url }}">
+    {% block head_meta %}
+    {% endblock %}
+    {% block stylesheets %}
+        <link href="/assets/css/app.css?v1" rel="stylesheet" type="text/css"/>
+    {% endblock %}
+    <link rel="shortcut icon" href="/favicon.png">
+    {% if google_tag_manager_id %}
+        <script async src="https://www.googletagmanager.com/gtag/js?id={{ google_tag_manager_id }}"></script>
+        <script>
+            window.dataLayer = window.dataLayer || [];
+
+            function gtag() {
+                dataLayer.push(arguments);
+            }
+
+            gtag('js', new Date());
+            gtag('config', '{{ google_tag_manager_id }}');
+        </script>
+    {% endif %}
+</head>
+<body>
+<div class="container">
+    <div class="logo d-none d-lg-block mb-3">
+        <a href="{{ index_path }}"><img alt="{{ site.title }}" src="/assets/img/logo.jpg"></a>
+    </div>
+    <nav class="navbar navbar-expand-lg bg-body-tertiary rounded mb-3" aria-label="Menu Navigation">
+        <div class="container-fluid">
+            <a class="navbar-brand d-inline d-lg-none" href="{{ index_path }}">{{ site.title }}</a>
+            <button class="navbar-toggler" type="button" data-bs-toggle="collapse"
+                    data-bs-target="#menu" aria-controls="menu" aria-expanded="false"
+                    aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
+            <div class="collapse navbar-collapse" id="menu">
+                <ul class="navbar-nav me-auto mb-2 mb-lg-0">
+                    <li class="nav-item"><a
+                                class="nav-link text-primary{% if index_path == current_path %} active disabled{% endif %}"
+                                href="{{ index_path }}#comic">Latest</a></li>
+                    <li class="nav-item"><a
+                                class="nav-link text-primary{% if comic_archive_path == current_path %} active disabled{% endif %}"
+                                href="{{ comic_archive_path }}">Archives</a></li>
+                    <li class="nav-item"><a
+                                class="nav-link text-primary{% if about_path == current_path %} active disabled{% endif %}"
+                                href="{{ about_path }}">About</a></li>
+                </ul>
+                <form action="{{ path('search') }}" method="get" role="search">
+                    <div class="input-group">
+                        <input type="text" class="form-control" name="q" placeholder="Search"
+                               value="{{ app.request.query.get('q') }}">
+                        <button type="submit" class="btn btn-primary">
+                            <span class="bi bi-search" aria-hidden="true"></span>
+                        </button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </nav>
+    {% block body %}
+    {% endblock %}
+    {% block footer %}
+        <div class="row mt-3">
+            <div class="col-6">&copy; John Mullanaphy 2014-{{ 'now'|date('Y') }}, <em>All Rights Reserved</em>.</div>
+            {% if social_media %}
+                <div class="col-6 text-end">
+                    <ul class="list-inline">
+                        {% for platform in social_media %}
+                            <li class="list-inline-item"><a href="{{ platform.url }}">
+                                    <span class="bi bi-{{ platform.icon }}"></span>
+                                    <span class="d-none d-lg-inline">{{ platform.title }}</span>
+                                </a></li>
+                        {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+        </div>
+    {% endblock %}
+</div>
+{% block javascripts %}
+    <script src="/assets/js/bootstrap.min.js" type="text/javascript"></script>
+{% endblock %}
+</body>
+</html>

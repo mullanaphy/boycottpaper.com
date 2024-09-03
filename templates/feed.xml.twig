@@ -1,0 +1,22 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<rss xmlns:atom="http://www.w3.org/2005/Atom" version="2.0">
+    <channel>
+        <title>{{ site.title }}</title>
+        <link>https://www.boycottpaper.com/</link>
+        <description>Latest {{ feedLimit }} comics from Boycott Paper.</description>
+        <atom:link href="https://www.boycottpaper.com/feed" rel="self" type="application/rss+xml"/>
+        <language>en-us</language>
+        <copyright>Copyright (c) John Mullanaphy 2014-{{ 'now'|date('Y') }}</copyright>
+        <lastBuildDate>{{ 'now'|date('r') }}</lastBuildDate>
+        {% for comic in feed %}
+
+            <item>
+                <title>{{ comic.title }}</title>
+                <link>{{ url('comic_item', {slug: comic.slug}) }}</link>
+                <description>{{ comic.description }}</description>
+                <pubDate>{{ comic.updated|date('r') }}</pubDate>
+                <guid isPermaLink="true">{{ url('comic_item', {slug: comic.slug}) }}</guid>
+            </item>
+        {% endfor %}
+    </channel>
+</rss>

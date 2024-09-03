@@ -1,0 +1,289 @@
+<?php
+
+namespace App\Entity;
+
+use App\Config;
+use App\Repository\ComicRepository;
+use DateTime;
+use DateTimeInterface;
+use Doctrine\Common\Collections\ArrayCollection;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\DBAL\Types\Types;
+use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\HttpFoundation\File\UploadedFile;
+use Symfony\Component\Uid\Uuid;
+
+#[ORM\Entity(repositoryClass: ComicRepository::class)]
+#[ORM\HasLifecycleCallbacks]
+class Comic
+{
+    #[ORM\Id]
+    #[ORM\GeneratedValue]
+    #[ORM\Column]
+    private ?int $id = null;
+
+    #[ORM\ManyToOne(inversedBy: 'comics')]
+    #[ORM\JoinColumn(nullable: false)]
+    private ?User $author = null;
+
+    #[ORM\Column(length: 32, unique: true)]
+    private ?string $slug = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $title = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $created = null;
+
+    #[ORM\Column(type: Types::DATETIME_MUTABLE)]
+    private ?DateTimeInterface $updated = null;
+
+    /**
+     * @var Collection<int, Panel>
+     */
+    #[ORM\OneToMany(targetEntity: Panel::class, mappedBy: 'comic', orphanRemoval: true)]
+    #[ORM\OrderBy(['id' => 'ASC'])]
+    private Collection $panels;
+
+    #[ORM\OneToOne(mappedBy: 'comic', cascade: ['persist', 'remove'])]
+    private ?Hidden $hidden = null;
+
+    #[ORM\Column(length: 128)]
+    private ?string $description = null;
+
+    #[ORM\Column(type: Types::TEXT, nullable: true)]
+    private ?string $commentary = null;
+
+    #[ORM\Column(nullable: true)]
+    private ?bool $safe = null;
+
+    #[ORM\Column(length: 255)]
+    private ?string $thumbnail = null;
+
+    private ?UploadedFile $thumbnailFile = null;
+
+    public function __construct()
+    {
+        $this->panels = new ArrayCollection();
+    }
+
+    public function getId(): ?int
+    {
+        return $this->id;
+    }
+
+    public function getAuthor(): ?User
+    {
+        return $this->author;
+    }
+
+    public function setAuthor(?User $author): static
+    {
+        $this->author = $author;
+
+        return $this;
+    }
+
+    public function getSlug(): ?string
+    {
+        return $this->slug;
+    }
+
+    public function setSlug(string $slug): static
+    {
+        $this->slug = $slug;
+
+        return $this;
+    }
+
+    public function getTitle(): ?string
+    {
+        return $this->title;
+    }
+
+    public function setTitle(string $title): static
+    {
+        $this->title = $title;
+
+        return $this;
+    }
+
+    public function isSafe(): ?bool
+    {
+        return $this->safe;
+    }
+
+    public function setSafe(?bool $safe): static
+    {
+        $this->safe = $safe;
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Panel>
+     */
+    public function getPanels(): Collection
+    {
+        return $this->panels;
+    }
+
+    public function addPanel(Panel $panel): static
+    {
+        if (!$this->panels->contains($panel)) {
+            $this->panels->add($panel);
+            $panel->setComic($this);
+        }
+
+        return $this;
+    }
+
+    public function removePanel(Panel $panel): static
+    {
+        if ($this->panels->removeElement($panel)) {
+            // set the owning side to null (unless already changed)
+            if ($panel->getComic() === $this) {
+                $panel->setComic(null);
+            }
+        }
+
+        return $this;
+    }
+
+    public function getHidden(): ?Hidden
+    {
+        return $this->hidden;
+    }
+
+    public function setHidden(?Hidden $hidden): static
+    {
+        // unset the owning side of the relation if necessary
+        if ($hidden === null && $this->hidden !== null) {
+            $this->hidden->setComic(null);
+        }
+
+        // set the owning side of the relation if necessary
+        if ($hidden !== null && $hidden->getComic() !== $this) {
+            $hidden->setComic($this);
+        }
+
+        $this->hidden = $hidden;
+
+        return $this;
+    }
+
+    public function getCommentary(): ?string
+    {
+        return $this->commentary;
+    }
+
+    public function setCommentary(?string $commentary): static
+    {
+        $this->commentary = $commentary;
+
+        return $this;
+    }
+
+    public function getThumbnail(): ?string
+    {
+        return $this->thumbnail;
+    }
+
+    public function setThumbnail(?string $thumbnail): static
+    {
+        $this->thumbnail = $thumbnail;
+
+        return $this;
+    }
+
+    public function getThumbnailFile(): ?UploadedFile
+    {
+        return $this->thumbnailFile;
+    }
+
+    public function setThumbnailFile(?UploadedFile $file): static
+    {
+        $this->thumbnailFile = $file;
+
+        return $this;
+    }
+
+    public function getThumbnailPath(): ?string
+    {
+        return $this->id && $this->thumbnail
+            ? DIRECTORY_SEPARATOR . Config::MEDIA_DIRECTORY . DIRECTORY_SEPARATOR . $this->getThumbnail()
+            : null;
+    }
+
+    public function __toString(): string
+    {
+        return $this->title ?? 'Untitled Comic';
+    }
+
+    public function getDescription(): ?string
+    {
+        return $this->description;
+    }
+
+    public function setDescription(string $description): static
+    {
+        $this->description = $description;
+
+        return $this;
+    }
+
+    public function getCreated(): DateTimeInterface
+    {
+        return $this->created;
+    }
+
+    public function setCreated(DateTimeInterface $created): static
+    {
+        $this->created = $created;
+
+        return $this;
+    }
+
+    public function getUpdated(): ?DateTimeInterface
+    {
+        return $this->updated;
+    }
+
+    public function setUpdated(DateTimeInterface $updated): static
+    {
+        $this->updated = $updated;
+
+        return $this;
+    }
+
+    #[ORM\PrePersist]
+    public function refreshCreated(): void
+    {
+        $this->setCreated(new DateTime());
+        $this->refreshUpdated();
+    }
+
+    #[ORM\PreUpdate]
+    public function refreshUpdated(): void
+    {
+        $this->setUpdated(new DateTime());
+    }
+
+    #[ORM\PreUpdate]
+    #[ORM\PrePersist]
+    public function upload(): void
+    {
+        if (null === $this->thumbnailFile) {
+            return;
+        }
+
+        $fileName = 't-' . Uuid::v7()->toBase58() . '.' . $this->thumbnailFile->guessExtension();
+        $this->thumbnailFile->move(
+            Config::MEDIA_DIRECTORY,
+            $fileName
+        );
+
+        $this->setThumbnail($fileName);
+        $this->setThumbnailFile(null);
+    }
+}

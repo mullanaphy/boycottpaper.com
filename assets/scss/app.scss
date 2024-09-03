@@ -1,0 +1,117 @@
+// Default variables
+$enable-gradients: true;
+$enable-shadows: true;
+$offcanvas-box-shadow: 0 1rem 3rem rgba(0, 0, 0, .175);
+$body-bg: #fff;
+$border-radius: .4rem;
+$enable-gradients: true;
+
+// Include functions first
+@import "../../vendor/twbs/bootstrap/scss/functions";
+
+// Required
+@import "../../vendor/twbs/bootstrap/scss/variables";
+@import "../../vendor/twbs/bootstrap/scss/variables-dark";
+@import "../../vendor/twbs/bootstrap/scss/maps";
+@import "../../vendor/twbs/bootstrap/scss/mixins";
+@import "../../vendor/twbs/bootstrap/scss/utilities";
+@import "../../vendor/twbs/bootstrap/scss/root";
+@import "../../vendor/twbs/bootstrap/scss/reboot";
+@import "../../vendor/twbs/bootstrap/scss/type";
+@import "../../vendor/twbs/bootstrap/scss/card";
+@import "../../vendor/twbs/bootstrap/scss/images";
+@import "../../vendor/twbs/bootstrap/scss/containers";
+@import "../../vendor/twbs/bootstrap/scss/grid";
+@import "../../vendor/twbs/bootstrap/scss/tables";
+@import "../../vendor/twbs/bootstrap/scss/forms";
+@import "../../vendor/twbs/bootstrap/scss/buttons";
+@import "../../vendor/twbs/bootstrap/scss/transitions";
+@import "../../vendor/twbs/bootstrap/scss/button-group";
+@import "../../vendor/twbs/bootstrap/scss/nav";
+@import "../../vendor/twbs/bootstrap/scss/navbar"; // Requires nav
+@import "../../vendor/twbs/bootstrap/scss/breadcrumb";
+@import "../../vendor/twbs/bootstrap/scss/pagination";
+@import "../../vendor/twbs/bootstrap/scss/alert";
+@import "../../vendor/twbs/bootstrap/scss/progress";
+@import "../../vendor/twbs/bootstrap/scss/close";
+@import "../../vendor/twbs/bootstrap/scss/toasts";
+@import "../../vendor/twbs/bootstrap/scss/modal"; // Requires transitions
+
+// Helpers
+@import "../../vendor/twbs/bootstrap/scss/helpers";
+
+// Utilities
+@import "../../vendor/twbs/bootstrap/scss/utilities/api";
+
+// Icons
+@import "../../vendor/twbs/bootstrap-icons/font/bootstrap-icons";
+
+a {
+  color: var(--bs-primary);
+  text-decoration: none;
+}
+
+a:active, a:hover {
+  text-decoration: underline;
+}
+
+.navbar {
+  border: solid 1px var(--bs-light-border-subtle);
+}
+
+.navbar-nav .nav-link.active.disabled {
+  font-weight: bold;
+}
+
+.footer {
+  border-top: 1px solid #eee;
+  padding-top: 10px;
+  padding-bottom: 20px
+}
+
+.comic-panel {
+  clear: both
+}
+
+.addthis_sharing_toolbox {
+  margin: 20px 0
+}
+
+.pagination a {
+  font-weight: bold
+}
+
+.pagination .disabled a, .pagination .disabled a:active, .pagination .disabled a:hover {
+  font-weight: normal;
+  font-style: italic;
+  color: #eee
+}
+
+.navbar-support {
+  color: #d9534f !important
+}
+
+.navbar-support:active, .navbar-support:hover {
+  color: #a64f4c !important
+}
+
+.header-patreon {
+  margin: 0 40px
+}
+
+.header-patreon img {
+  height: 100px
+}
+
+.thumbnail-image {
+  background-position: top center;
+  background-repeat: no-repeat;
+  background-size: 100%;
+  display: block;
+  height: 200px;
+}
+
+.comic-commentary p {
+  margin-bottom: 0;
+  margin-top: 1em;
+}
