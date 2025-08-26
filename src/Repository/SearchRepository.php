@@ -19,9 +19,10 @@ class SearchRepository extends ServiceEntityRepository
 
     public function findByQuery(string $get): Paginator
     {
+        $cleaned = preg_replace('/[^a-z0-9 ]/', '', strtolower($get));
         $queryBuilder = $this->createQueryBuilder('c')
-            ->setParameter('m', implode('', [strtolower($get), '*']))
-            ->setParameter('l', implode('', ['%', strtolower($get), '%']));
+            ->setParameter('m', implode('', [$cleaned, '*']))
+            ->setParameter('l', implode('', ['%', $cleaned, '%']));
 
         $queryBuilder
             ->addSelect('MATCH(c.content) AGAINST (:m IN BOOLEAN MODE) AS score')
