@@ -2,6 +2,7 @@
 
 namespace App\Service;
 
+use App\Config;
 use App\Entity\Comic;
 use Doctrine\ORM\Tools\Pagination\Paginator;
 
@@ -71,7 +72,7 @@ class MetaDataService
                 'url' => 'https://boycottpaper.com',
                 'name' => 'Boycott Paper',
             ],
-            'image' => $entity->getThumbnailPath(),
+            'image' => Config::SITE['baseUrl'] . $entity->getThumbnailPath(),
             'datePublished' => $entity->getCreated()->format('Y-m-d\TH:i:s\Z'),
             'dateModified' => $entity->getUpdated()->format('Y-m-d\TH:i:s\Z'),
         ];

@@ -7,6 +7,7 @@ class Config
     public const MEDIA_DIRECTORY = 'media';
 
     public const SITE = [
+        'baseUrl' => 'https://www.boycottpaper.com',
         'title' => 'Boycott Paper!',
         'description' => 'A webcomic about the perils of paper and the joys of technology.',
         'author' => 'mullanaphy',
