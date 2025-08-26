@@ -3,7 +3,6 @@
 namespace App\Controller;
 
 use App\Entity\Comic;
-use App\Entity\Panel;
 use App\Repository\ComicRepository;
 use App\Service\MetaDataService;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;

@@ -54,7 +54,7 @@ class MetaDataService
     public static function ldJson(Comic $entity, string $canonicalUrl): array
     {
         return [
-            '@context' => 'http://schema.org',
+            '@context' => 'https://schema.org',
             '@type' => 'Article',
             'mainEntityOfPage' => [
                 '@type' => 'WebPage',

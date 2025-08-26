@@ -22,10 +22,10 @@ class Search
     private ?string $content = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $created = null;
+    private ?DateTimeInterface $created = null;
 
     #[ORM\Column(type: Types::DATETIME_MUTABLE)]
-    private ?\DateTimeInterface $updated = null;
+    private ?DateTimeInterface $updated = null;
 
     #[ORM\Column(length: 64)]
     private ?string $entity = null;

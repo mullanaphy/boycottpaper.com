@@ -30,7 +30,7 @@ class SearchAdmin extends AbstractAdmin
         $list
             ->addIdentifier('id', null, [
                 'route' => [
-                    'name' => 'edit'
+                    'name' => 'edit',
                 ],
                 'row_align' => 'left',
                 'header_style' => 'width: 5%',
@@ -47,6 +47,6 @@ class SearchAdmin extends AbstractAdmin
             ])
             ->add('updated', null, [
                 'header_style' => 'width: 15%',
-            ]);;
+            ]);
     }
 }

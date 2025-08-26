@@ -4,7 +4,6 @@ namespace App\Twig;
 
 use App\Config;
 use App\Entity\Comic;
-use App\Entity\Site;
 use Doctrine\ORM\EntityManagerInterface;
 use Psr\Cache\InvalidArgumentException;
 use Symfony\Component\EventDispatcher\EventSubscriberInterface;

@@ -61,11 +61,10 @@ class SearchListener
     /**
      * Now that we have search data to save via postFlush, we'll now save them accordingly.
      *
-     * @param PostFlushEventArgs $eventArgs
      * @return void
      * @throws InvalidArgumentException
      */
-    public function postFlush(PostFlushEventArgs $eventArgs): void
+    public function postFlush(): void
     {
         if (!count($this->toSave)) {
             return;
@@ -74,7 +73,7 @@ class SearchListener
         foreach ($this->toSave as $pair) {
             /* @var Search $search */
             /* @var Comic $entity */
-            list($search, $entity) = $pair;
+            [$search, $entity] = $pair;
 
             $this->entityManager->createNativeQuery($search->getEntityId() ? self::UPDATE : self::INSERT, new ResultSetMapping())
                 ->setParameters([
