@@ -31,7 +31,7 @@ class ComicController extends AbstractController
     }
 
     #[Route('/comic/{slug}.html', name: 'comic_item')]
-    public function item(string $slug, Request $request, ComicRepository $repository): Response
+    public function item(string $slug, ComicRepository $repository): Response
     {
         /* @var Comic $comic */
         $comic = $repository->findOneBy(['slug' => $slug]);

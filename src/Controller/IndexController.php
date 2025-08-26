@@ -40,7 +40,7 @@ class IndexController extends AbstractController
     }
 
     #[Route('/feed', name: 'feed', methods: ['GET'])]
-    public function feed(Request $request, ComicRepository $repository): Response
+    public function feed(ComicRepository $repository): Response
     {
         $latest = $repository->findLatestComic();
         $feed = $repository->findBy([], ['id' => 'DESC'], Config::SITE['feedLimit']);
