@@ -9,7 +9,7 @@
                 <div class="card">
                     <!-- Score: {{ (item.score)|format_percent_number({fraction_digit: 2}) }} -->
                     {% if item.image %}
-                        <a href="{{ path(item.path, item.identity) }}">
+                        <a href="{{ path(item.path, item.identity) }}#comic">
                             <img src="{{ item.image }}" alt="{{ item.title }}"
                                  class="card-img-top">
                         </a>

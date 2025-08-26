@@ -8,7 +8,7 @@
             <div class="col-xs-12 col-sm-6 col-md-4 mb-3">
                 <div class="card">
                     {% if comic.panels|length >= 1 %}
-                        <a href="{{ path('comic_item', {slug: comic.slug}) }}">
+                        <a href="{{ path('comic_item', {slug: comic.slug}) }}#comic">
                             <img src="{{ comic.thumbnailPath }}" alt="{{ comic.title }}"
                                  class="card-img-top">
                         </a>
@@ -16,7 +16,7 @@
                     <div class="card-body">
                         <h5 class="card-title">{{ comic.title }}</h5>
                         <p class="card-text">{{ comic.description|striptags|u.truncate(128, '...', false) }}</p>
-                        <a href="{{ path('comic_item', {slug: comic.slug}) }}" class="btn btn-primary">View
+                        <a href="{{ path('comic_item', {slug: comic.slug}) }}#comic" class="btn btn-primary">View
                             Comic</a>
                     </div>
                 </div>
