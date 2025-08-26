@@ -1,5 +1,4 @@
 {% set canonical_url = canonical_url is defined ? canonical_url : app.request.uri %}
-{% set current_path = app.request.pathinfo %}
 {% set index_path = path('index') %}
 {% set comic_archive_path = path('comic_archive') %}
 {% set about_path = path('about') %}
@@ -44,13 +43,13 @@
             <div class="collapse navbar-collapse" id="menu">
                 <ul class="navbar-nav me-auto mb-2 mb-lg-0">
                     <li class="nav-item"><a
-                                class="nav-link text-primary{% if index_path == current_path %} active disabled{% endif %}"
+                                class="nav-link text-primary{% if isCurrentPage(index_path) %} active disabled{% endif %}"
                                 href="{{ index_path }}#comic">Latest</a></li>
                     <li class="nav-item"><a
-                                class="nav-link text-primary{% if comic_archive_path == current_path %} active disabled{% endif %}"
+                                class="nav-link text-primary{% if isCurrentPage(comic_archive_path) %} active disabled{% endif %}"
                                 href="{{ comic_archive_path }}">Archives</a></li>
                     <li class="nav-item"><a
-                                class="nav-link text-primary{% if about_path == current_path %} active disabled{% endif %}"
+                                class="nav-link text-primary{% if isCurrentPage(about_path) %} active disabled{% endif %}"
                                 href="{{ about_path }}">About</a></li>
                 </ul>
                 <form action="{{ path('search') }}" method="get" role="search">

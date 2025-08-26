@@ -2,12 +2,17 @@
 
 namespace App\Twig;
 
-use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\RequestStack;
 use Twig\Extension\AbstractExtension;
 use Twig\TwigFunction;
 
 class IsCurrentPageFunction extends AbstractExtension
 {
+    public function __construct(private readonly RequestStack $requestStack)
+    {
+
+    }
+
     public function getFunctions(): array
     {
         return [
@@ -15,8 +20,9 @@ class IsCurrentPageFunction extends AbstractExtension
         ];
     }
 
-    public function isCurrentPage(string $page, Request $request): bool
+    public function isCurrentPage(string $page): bool
     {
+        $request = $this->requestStack->getCurrentRequest();
         return $request->getPathInfo() === $page || $request->getUri() === $page;
     }
 }
